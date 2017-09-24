@@ -11,6 +11,11 @@ namespace Xin;
 use PDO;
 use Phalcon\Di\FactoryDefault;
 
+/**
+ * Class DB
+ * @package Xin
+ * @see     https://docs.phalconphp.com/en/3.2/api/Phalcon_Db_Adapter_Pdo_Mysql
+ */
 class DB
 {
     /**
@@ -25,13 +30,13 @@ class DB
      * @param array $params
      * @return array
      */
-    public static function query($sql, $params = [])
+    public static function query($sql, $params = [], $fetchMode = PDO::FETCH_ASSOC)
     {
         $db = static::dbInstance();
         $status = $db->query($sql, $params);
         $result = [];
         if ($status) {
-            $status->setFetchMode(PDO::FETCH_ASSOC);
+            $status->setFetchMode($fetchMode);
             $result = $status->fetchAll();
         }
         return $result;
@@ -44,13 +49,13 @@ class DB
      * @param array $params
      * @return array
      */
-    public static function fetch($sql, $params = [])
+    public static function fetch($sql, $params = [], $fetchMode = PDO::FETCH_ASSOC)
     {
         $db = static::dbInstance();
         $status = $db->query($sql, $params);
         $result = [];
         if ($status) {
-            $status->setFetchMode(PDO::FETCH_ASSOC);
+            $status->setFetchMode($fetchMode);
             $result = $status->fetch();
         }
         return $result;
@@ -69,13 +74,7 @@ class DB
         $db = static::dbInstance();
         $status = $db->execute($sql, $params);
         if ($status && $withRowCount) {
-            return $status->affectedRows();
-            // $sql = "SELECT ROW_COUNT() AS row_count;";
-            // $res = self::fetch($sql);
-            // if ($res) {
-            //     return $res['row_count'];
-            // }
-            // return 0;
+            return $db->affectedRows();
         }
         return $status;
     }
@@ -128,4 +127,8 @@ class DB
         return $di->getShared(static::$dbServiceName);
     }
 
+    public static function __callStatic($name, $arguments)
+    {
+        return static::dbInstance()->$name(...$arguments);
+    }
 }
