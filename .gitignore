@@ -1,2 +1,4 @@
 composer.lock
 /vendor/
+/tests/_ci/config.php
+*.cache

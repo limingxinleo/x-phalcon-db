@@ -1,5 +1,7 @@
 # X-Phalcon-DB
 
+[![Build Status](https://travis-ci.org/limingxinleo/x-phalcon-db.svg?branch=master)](https://travis-ci.org/limingxinleo/x-phalcon-db)
+
 ## 安装
 ~~~
 composer require limingxinleo/x-phalcon-db

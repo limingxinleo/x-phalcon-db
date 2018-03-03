@@ -16,22 +16,23 @@ class BaseTest extends TestCase
 {
     public function testInsert()
     {
-        $sql = "INSERT INTO {$this->table} (`name`,`age`) VALUES (?,?)";
-        $res = DB::execute($sql, ['limx', 26]);
+        $sql = "INSERT INTO `user` (`name`,`role_id`) VALUES (?,?)";
+        $res = DB::execute($sql, [uniqid(), 1]);
         $this->assertTrue($res);
     }
 
     public function testQuery()
     {
-        $sql = "SELECT * FROM `{$this->table}` WHERE `name` = ? LIMIT 1;";
+        $sql = "SELECT * FROM `user` WHERE `name` = ? LIMIT 1;";
         $res = DB::query($sql, ['limx']);
-        $this->assertTrue(count($res) > 0);
+        $this->assertEquals(1, $res[0]['id']);
+        $this->assertEquals(1, count($res));
         $this->assertTrue(is_array($res));
     }
 
     public function testFetch()
     {
-        $sql = "SELECT * FROM `{$this->table}` WHERE `name` = ? LIMIT 1;";
+        $sql = "SELECT * FROM `user` WHERE `name` = ? LIMIT 1;";
         $res = DB::fetch($sql, ['limx']);
         $this->assertTrue(is_array($res));
 
@@ -41,22 +42,21 @@ class BaseTest extends TestCase
 
     public function testExecute()
     {
-        $sql = "INSERT INTO {$this->table} (`name`,`age`) VALUES (?,?)";
-        $res = DB::execute($sql, ['Agnes', 25]);
+        $sql = "INSERT INTO `user` (`name`,`role_id`) VALUES (?,?)";
+        $res = DB::execute($sql, [uniqid(), 2]);
         $this->assertTrue($res);
 
-        $res = DB::execute($sql, ['Agnes', 25], true);
+        $res = DB::execute($sql, [uniqid(), 1], true);
         $this->assertEquals(1, $res);
 
-        $sql = "UPDATE {$this->table} SET age=? WHERE name =?";
-        $res = DB::execute($sql, [26, 'Agnes'], true);
+        $sql = "UPDATE `user` SET role_id=? WHERE name =?";
+        $res = DB::execute($sql, [2, 'limx'], true);
         $this->assertTrue(is_numeric($res));
     }
 
     public function testTableExist()
     {
-        $this->assertTrue(DB::tableExists($this->table));
+        $this->assertTrue(DB::tableExists('user'));
         $this->assertFalse(DB::tableExists('sss'));
     }
-
 }
