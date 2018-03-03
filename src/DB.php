@@ -124,7 +124,8 @@ class DB
     protected static function dbInstance()
     {
         $di = FactoryDefault::getDefault();
-        return $di->getShared(static::$dbServiceName);
+        $db = $di->getShared(static::$dbServiceName);
+        return $db;
     }
 
     public static function __callStatic($name, $arguments)

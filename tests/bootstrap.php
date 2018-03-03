@@ -33,3 +33,6 @@ $di->setShared('db', function () use ($config) {
         ]
     );
 });
+
+// php5.6下，在DB.php中第一次实例化DB服务，会报错
+$db = $di->getShared('db');

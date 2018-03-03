@@ -26,5 +26,8 @@
         "psr-4": {
             "Tests\\": "tests"
         }
+    },
+    "suggest": {
+        "php": ">=7.0"
     }
 }
